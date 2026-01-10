@@ -31,8 +31,8 @@ export async function fetchProducts(): Promise<Product[]> {
       headers: {
         "Accept": "application/json",
       },
-      // Next.js Server Components fetch works best with default cache settings
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
+      // Client-side fetch doesn't support Next.js cache options
+      cache: "no-store", // Prevent caching issues
     });
 
     if (!response.ok) {
@@ -84,8 +84,8 @@ export async function fetchProduct(id: string): Promise<Product> {
       headers: {
         "Accept": "application/json",
       },
-      // Next.js Server Components fetch works best with default cache settings
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
+      // Client-side fetch doesn't support Next.js cache options
+      cache: "no-store", // Prevent caching issues
     });
 
     if (!response.ok) {
