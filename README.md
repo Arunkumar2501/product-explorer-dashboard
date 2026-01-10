@@ -1,10 +1,10 @@
 # Product Explorer Dashboard
 
-A modern, responsive web application built with Next.js for browsing and exploring products with advanced filtering, search, and favorites functionality.
+A production-ready web application built with Next.js App Router for browsing and exploring products with comprehensive filtering, search, sorting, and favorites functionality.
 
 ## Project Overview
 
-Product Explorer Dashboard is a full-featured product browsing application that allows users to discover products, view detailed information, and manage their favorite items. The application fetches data from the Fake Store API and provides an intuitive interface for exploring products with real-time search and filtering capabilities.
+Product Explorer Dashboard is a full-featured product browsing application that enables users to discover products, view detailed information, and manage their favorite items. The application fetches product data from the Fake Store API and provides an intuitive interface with real-time client-side filtering, search, sorting capabilities, and persistent favorites management.
 
 ## Features Implemented
 
@@ -27,11 +27,23 @@ Product Explorer Dashboard is a full-featured product browsing application that 
   - Combined search and category filtering
   - Results counter showing filtered vs total products
 
+- **Price Sorting**
+  - Sort products by price in ascending or descending order
+  - Sorting applied after filtering, maintaining filter state
+  - Works seamlessly with search, category, and favorites filters
+
 - **Favorites Feature**
   - Heart icon toggle on each product card
-  - Persistent favorites storage using localStorage
-  - "Show Favorites Only" filter option
-  - Favorites count display
+  - Persistent favorites storage using localStorage (survives page refresh and browser restart)
+  - "Show Favorites Only" filter option to view only favorited products
+  - Favorites count display in filter section
+  - Single source of truth state management prevents data inconsistencies
+
+- **Dark Mode**
+  - System preference detection on first visit
+  - Manual theme toggle button in header
+  - Persistent theme preference in localStorage
+  - Smooth theme transitions across all UI components
 
 ### UX Enhancements
 
@@ -132,9 +144,9 @@ src/
 
 ### Styling Approach
 
-- **Tailwind CSS**: Utility-first CSS for rapid development and consistency
-- **Responsive Design**: Mobile-first with Tailwind breakpoints
-- **Dark Mode**: Built-in dark mode support throughout the application
+- **Tailwind CSS v4**: Utility-first CSS with CSS-based configuration
+- **Responsive Design**: Mobile-first approach with breakpoints for tablet, desktop, and large screens
+- **Dark Mode**: Class-based dark mode using Tailwind's `dark:` variant system with theme persistence
 
 ## Assumptions & Trade-offs
 
@@ -147,23 +159,23 @@ src/
 
 ### Trade-offs
 
-1. **Client-Side Filtering**: 
-   - ✅ Pros: Instant feedback, no server requests, better UX for small datasets
-   - ❌ Cons: Not scalable for large product catalogs
+1. **Client-Side Filtering and Sorting**: 
+   - Pros: Instant feedback, no server requests, optimal UX for small datasets
+   - Cons: Not scalable for large product catalogs; would require server-side implementation
 
-2. **localStorage vs Server-Side Storage**:
-   - ✅ Pros: No authentication required, works offline, simple implementation
-   - ❌ Cons: Not synced across devices, cleared on browser data deletion
+2. **localStorage for Favorites**:
+   - Pros: No authentication required, works offline, simple implementation, persists across sessions
+   - Cons: Not synced across devices or browsers, cleared when browser data is deleted
 
 3. **Single State Source Pattern**:
-   - ✅ Pros: Prevents state isolation bugs, easier to debug
-   - ❌ Cons: Requires prop drilling (acceptable for this component tree depth)
+   - Pros: Prevents state isolation bugs, easier to debug, ensures data consistency
+   - Cons: Requires prop drilling (acceptable for current component tree depth)
 
 4. **No Tests Included**:
-   - Trade-off for faster development, but tests should be added for production
+   - Trade-off for faster development; unit and integration tests should be added for production use
 
 5. **No Pagination**:
-   - All products load at once, which is acceptable for ~20 items but would need pagination for larger datasets
+   - All products load at once, acceptable for ~20 items but would require pagination or infinite scroll for larger datasets
 
 ## Future Improvements
 
@@ -171,7 +183,7 @@ src/
 
 - **Pagination or Infinite Scroll**: For handling larger product catalogs
 - **Server-Side Search**: Implement full-text search with backend support
-- **Sorting Options**: Sort by price, rating, or name
+- **Additional Sorting Options**: Sort by rating or name in addition to price
 - **Product Comparison**: Compare multiple products side-by-side
 - **User Authentication**: Sync favorites across devices with user accounts
 - **Product Reviews**: Display and submit product reviews
@@ -196,8 +208,8 @@ src/
 
 ## Live Demo
 
-<!-- TODO: Add live demo URL when deployed -->
+Live demo URL will be available after deployment.
 
-## License
+---
 
-This project was created as a frontend assignment demonstration.
+*This project was developed as a frontend assignment submission.*
