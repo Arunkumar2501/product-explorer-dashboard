@@ -12,12 +12,37 @@ interface ProductFiltersProps {
   isInitialized: boolean;
 }
 
+type SortOption = "none" | "price-low-high" | "price-high-low";
+
 /**
  * Extracts unique categories from products
  */
 function getUniqueCategories(products: Product[]): string[] {
   const categories = new Set(products.map((product) => product.category));
   return Array.from(categories).sort();
+}
+
+/**
+ * Sorts products by price based on the selected sort option
+ * Returns a new array without mutating the original
+ */
+function sortProducts(products: Product[], sortOption: SortOption): Product[] {
+  if (sortOption === "none") {
+    return products;
+  }
+
+  // Create a shallow copy to avoid mutating the original array
+  const sorted = [...products];
+
+  if (sortOption === "price-low-high") {
+    return sorted.sort((a, b) => a.price - b.price);
+  }
+
+  if (sortOption === "price-high-low") {
+    return sorted.sort((a, b) => b.price - a.price);
+  }
+
+  return sorted;
 }
 
 /**
@@ -34,6 +59,7 @@ export default function ProductFilters({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [sortOption, setSortOption] = useState<SortOption>("none");
 
   // Get unique categories for the dropdown
   const categories = useMemo(() => getUniqueCategories(products), [products]);
@@ -57,11 +83,16 @@ export default function ProductFilters({
     });
   }, [products, searchTerm, selectedCategory, showFavoritesOnly, isFavorite]);
 
+  // Apply sorting AFTER filtering
+  const sortedAndFilteredProducts = useMemo(() => {
+    return sortProducts(filteredProducts, sortOption);
+  }, [filteredProducts, sortOption]);
+
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* Filters Section */}
       <div className="flex flex-col gap-4 sm:gap-5">
-        {/* Top Row: Search and Category */}
+        {/* Top Row: Search, Category, and Sort */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           {/* Search Input */}
           <div className="flex-1 sm:max-w-md">
@@ -125,6 +156,25 @@ export default function ProductFilters({
               ))}
             </select>
           </div>
+
+          {/* Sort by Price */}
+          <div className="sm:w-48">
+            <label htmlFor="sort" className="sr-only">
+              Sort by price
+            </label>
+            <select
+              id="sort"
+              name="sort"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value as SortOption)}
+              className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+              aria-label="Sort products by price"
+            >
+              <option value="none">Sort by Price</option>
+              <option value="price-low-high">Price: Low to High</option>
+              <option value="price-high-low">Price: High to Low</option>
+            </select>
+          </div>
         </div>
 
         {/* Favorites Toggle */}
@@ -154,7 +204,7 @@ export default function ProductFilters({
 
       {/* Results Count */}
       <div className="text-sm text-gray-600 dark:text-gray-400">
-        Showing {filteredProducts.length} of {products.length} products
+        Showing {sortedAndFilteredProducts.length} of {products.length} products
         {searchTerm && (
           <span className="ml-2">
             for &quot;{searchTerm}&quot;
@@ -170,11 +220,17 @@ export default function ProductFilters({
             (favorites only)
           </span>
         )}
+        {sortOption !== "none" && (
+          <span className="ml-2">
+            sorted by{" "}
+            {sortOption === "price-low-high" ? "Price: Low to High" : "Price: High to Low"}
+          </span>
+        )}
       </div>
 
       {/* Product Grid */}
       <ProductGrid
-        products={filteredProducts}
+        products={sortedAndFilteredProducts}
         isFavorite={isFavorite}
         toggleFavorite={toggleFavorite}
         emptyTitle={
