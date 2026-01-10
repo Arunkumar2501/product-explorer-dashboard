@@ -1,10 +1,14 @@
 import type { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
+import EmptyState from "./EmptyState";
 
 interface ProductGridProps {
   products: Product[];
   isFavorite: (id: number) => boolean;
   toggleFavorite: (id: number) => void;
+  emptyTitle?: string;
+  emptyDescription?: string;
+  emptyIcon?: React.ReactNode;
 }
 
 /**
@@ -16,19 +20,22 @@ export default function ProductGrid({
   products,
   isFavorite,
   toggleFavorite,
+  emptyTitle = "No products found",
+  emptyDescription = "Try adjusting your search or filters to find what you're looking for.",
+  emptyIcon,
 }: ProductGridProps) {
   if (products.length === 0) {
     return (
-      <div className="flex min-h-[400px] flex-col items-center justify-center px-4 py-16">
-        <p className="text-lg text-gray-600 dark:text-gray-400">
-          No products found.
-        </p>
-      </div>
+      <EmptyState
+        title={emptyTitle}
+        description={emptyDescription}
+        icon={emptyIcon}
+      />
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {products.map((product) => (
         <ProductCard
           key={product.id}

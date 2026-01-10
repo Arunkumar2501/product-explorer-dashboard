@@ -26,11 +26,19 @@ export default function FavoriteToggle({
     toggleFavorite(productId);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleFavorite(productId);
+    }
+  };
+
   return (
     <button
       type="button"
       onClick={handleClick}
-      className={`inline-flex items-center justify-center rounded-full p-2 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${className}`}
+      onKeyDown={handleKeyDown}
+      className={`inline-flex items-center justify-center rounded-full p-2 bg-white/80 backdrop-blur-sm shadow-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-gray-900/80 dark:hover:bg-gray-900 dark:focus:ring-offset-gray-900 ${className}`}
       aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
       aria-pressed={favorited}
     >

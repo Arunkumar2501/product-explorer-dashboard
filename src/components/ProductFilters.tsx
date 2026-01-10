@@ -58,11 +58,11 @@ export default function ProductFilters({
   }, [products, searchTerm, selectedCategory, showFavoritesOnly, isFavorite]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Filters Section */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 sm:gap-5">
         {/* Top Row: Search and Category */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           {/* Search Input */}
           <div className="flex-1 sm:max-w-md">
             <label htmlFor="search" className="sr-only">
@@ -92,7 +92,8 @@ export default function ProductFilters({
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm placeholder-gray-500 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                aria-label="Search products by title"
               />
             </div>
           </div>
@@ -107,7 +108,8 @@ export default function ProductFilters({
               name="category"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+              className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+              aria-label="Filter products by category"
             >
               <option value="all">All Categories</option>
               {categories.map((category) => (
@@ -133,7 +135,8 @@ export default function ProductFilters({
             name="favorites-only"
             checked={showFavoritesOnly}
             onChange={(e) => setShowFavoritesOnly(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-blue-600"
+            aria-label="Show favorites only"
           />
           <label
             htmlFor="favorites-only"
@@ -174,6 +177,49 @@ export default function ProductFilters({
         products={filteredProducts}
         isFavorite={isFavorite}
         toggleFavorite={toggleFavorite}
+        emptyTitle={
+          showFavoritesOnly && favorites.length === 0
+            ? "No favorites yet"
+            : "No products found"
+        }
+        emptyDescription={
+          showFavoritesOnly && favorites.length === 0
+            ? "Start favoriting products by clicking the heart icon on any product card."
+            : "Try adjusting your search or filters to find what you're looking for."
+        }
+        emptyIcon={
+          showFavoritesOnly && favorites.length === 0 ? (
+            <svg
+              className="h-16 w-16"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="h-16 w-16"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          )
+        }
       />
     </div>
   );
