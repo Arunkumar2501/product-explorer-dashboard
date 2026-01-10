@@ -29,8 +29,10 @@ export async function fetchProducts(): Promise<Product[]> {
     const response = await fetch(`${API_BASE_URL}/products`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Accept": "application/json",
       },
+      // Next.js Server Components fetch works best with default cache settings
+      next: { revalidate: 60 }, // Revalidate every 60 seconds
     });
 
     if (!response.ok) {
@@ -80,8 +82,10 @@ export async function fetchProduct(id: string): Promise<Product> {
     const response = await fetch(`${API_BASE_URL}/products/${id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Accept": "application/json",
       },
+      // Next.js Server Components fetch works best with default cache settings
+      next: { revalidate: 60 }, // Revalidate every 60 seconds
     });
 
     if (!response.ok) {
