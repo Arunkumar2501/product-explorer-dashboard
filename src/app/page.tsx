@@ -1,11 +1,12 @@
 import { fetchProducts } from "@/lib/api";
-import ProductFilters from "@/components/ProductFilters";
+import FavoritesProvider from "@/components/FavoritesProvider";
 import ErrorState from "@/components/ErrorState";
 
 /**
  * Home page - Product Listing Page
  * Server Component that fetches and displays all products
- * Products are passed to ProductFilters for client-side filtering
+ * Products are passed to FavoritesProvider which manages favorites state
+ * and passes it down to child components
  */
 export default async function Home() {
   try {
@@ -22,7 +23,7 @@ export default async function Home() {
               Browse our collection of {products.length} products
             </p>
           </div>
-          <ProductFilters products={products} />
+          <FavoritesProvider products={products} />
         </main>
       </div>
     );
