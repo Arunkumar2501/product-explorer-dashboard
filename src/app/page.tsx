@@ -1,10 +1,11 @@
 import { fetchProducts } from "@/lib/api";
-import ProductGrid from "@/components/ProductGrid";
+import ProductFilters from "@/components/ProductFilters";
 import ErrorState from "@/components/ErrorState";
 
 /**
  * Home page - Product Listing Page
  * Server Component that fetches and displays all products
+ * Products are passed to ProductFilters for client-side filtering
  */
 export default async function Home() {
   try {
@@ -21,7 +22,7 @@ export default async function Home() {
               Browse our collection of {products.length} products
             </p>
           </div>
-          <ProductGrid products={products} />
+          <ProductFilters products={products} />
         </main>
       </div>
     );
