@@ -4,7 +4,7 @@ A production-ready web application built with Next.js App Router for browsing an
 
 ## Project Overview
 
-Product Explorer Dashboard is a full-featured product browsing application that enables users to discover products, view detailed information, and manage their favorite items. The application fetches product data from the Fake Store API and provides an intuitive interface with real-time client-side filtering, search, sorting capabilities, and persistent favorites management.
+Product Explorer Dashboard is a full-featured product browsing application that enables users to discover products, view detailed information, and manage their favorite items. The application fetches product data from the Fake Store API using client-side data fetching to ensure compatibility across deployment platforms. It provides an intuitive interface with real-time client-side filtering, search, sorting capabilities, and persistent favorites management.
 
 ## Features Implemented
 
@@ -115,8 +115,9 @@ npm run lint
 
 ### Component Architecture
 
-- **Server Components by Default**: The main page (`page.tsx`) is a Server Component that fetches data, reducing client-side JavaScript
-- **Client Components Where Needed**: Only interactive components (filters, favorites) use `"use client"` directive
+- **Hybrid Approach**: Pages are Server Components for optimal structure, while data fetching happens in Client Components to ensure compatibility across deployment platforms
+- **Client Components for Data Fetching**: `ProductListingClient` and `ProductDetailsClient` handle API requests in the browser to avoid server-side blocking issues
+- **Client Components for Interactivity**: Interactive components (filters, favorites, theme toggle) use `"use client"` directive
 - **Prop-Driven State**: Favorites state is managed in a single `FavoritesProvider` component and passed down via props to avoid state isolation issues
 
 ### State Management
@@ -127,7 +128,8 @@ npm run lint
 
 ### Data Fetching
 
-- **Server-Side Fetching**: Products are fetched in Server Components for better SEO and initial load performance
+- **Client-Side Fetching**: Products are fetched in Client Components to ensure compatibility with hosting platforms that may block server-side API requests
+- **Loading States**: Skeleton loaders displayed while data is being fetched
 - **Error Handling**: Comprehensive error handling with custom `ApiError` class for typed error messages
 - **Type Safety**: Full TypeScript coverage for API responses and component props
 
@@ -208,7 +210,9 @@ src/
 
 ## Live Demo
 
-Live demo URL will be available after deployment.
+🔗 **Production Deployment**: [https://product-explorer-dashboardd.netlify.app/](https://product-explorer-dashboardd.netlify.app/)
+
+The application is live and fully functional on Netlify with all features including product listing, search, filtering, sorting, favorites, and dark mode.
 
 ---
 
